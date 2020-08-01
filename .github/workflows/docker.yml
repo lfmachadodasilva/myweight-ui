@@ -24,4 +24,6 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: coverage/*
       - name: Deploy to github 🚀
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: sh scripts/docker-deploy-github.sh
