@@ -13,7 +13,7 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
       - name: Install & Build 🛠
-        run: docker build . --target build -t build:$GITHUB_RUN_NUMBER
+        run: sh scripts/docker-build.sh
       - name: Test 🔌
         run: |
           docker build . --target test -t test:$GITHUB_RUN_NUMBER --cache-from build:$GITHUB_RUN_NUMBER
