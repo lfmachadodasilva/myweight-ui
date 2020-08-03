@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 wget -qO- https://cli-assets.heroku.com/install.sh | sh
-docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+echo "$HEROKU_PASSWORD" | docker login -u "$HEROKU_USERNAME" --password-stdin registry.heroku.com
 
-docker tag $GITHUB_REPOSITORY:$GITHUB_RUN_NUMBER web
-heroku container:push web --app $HEROKU_APP_NAME-dev
+docker tag $GITHUB_REPOSITORY:$GITHUB_RUN_NUMBER registry.heroku.com/$HEROKU_APP_NAME-dev/web
+docker push registry.heroku.com/$HEROKU_APP_NAME-dev/web
 heroku container:release web --app $HEROKU_APP_NAME-dev

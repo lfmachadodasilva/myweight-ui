@@ -29,14 +29,14 @@ jobs:
 
       - name: Deploy to heroku (dev) 🚀
         env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_PASSWORD }}
+          HEROKU_PASSWORD: ${{ secrets.HEROKU_PASSWORD }}
+          HEROKU_USERNAME: ${{ secrets.HEROKU_USERNAME }}
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
         run: sh scripts/docker-heroku-dev.sh
 
       - name: Deploy to heroku (prod) 🚀
         if: github.ref == 'refs/heads/master'
         env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_PASSWORD }}
           API_URL: ${{ secrets.API_URL }}
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY_PROD }}
           FIREBASE_PROJECT: ${{ secrets.FIREBASE_PROJECT_PROD }}
