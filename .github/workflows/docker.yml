@@ -30,6 +30,7 @@ jobs:
 
   deploy-heroku-dev:
     runs-on: ubuntu-latest
+    needs: build-test-deploy
     steps:
       - name: Install & Login heroku 🛠
         env:
@@ -45,6 +46,7 @@ jobs:
 
   deploy-heroku-prod:
     if: github.ref == 'refs/heads/master'
+    needs: build-test-deploy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
