@@ -27,3 +27,43 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: sh scripts/docker-deploy-github.sh
+
+  deploy-heroku-dev:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install & Login heroku 🛠
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_PASSWORD }}
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+        run: sh script/docker-heroku.sh
+      - name: Pull 📦
+        run: sh script/docker-pull.sh
+      - name: Deploy to heroku (dev) 🚀
+        env:
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+        run: sh script/docker-heroku-dev.sh
+
+  deploy-heroku-prod:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+      - name: Install & Login heroku 🛠
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_PASSWORD }}
+        run: sh script/docker-heroku.sh
+      - name: Substitutes environment variables 🌎
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_PASSWORD }}
+          API_URL: ${{ secrets.API_URL }}
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY_PROD }}
+          FIREBASE_PROJECT: ${{ secrets.FIREBASE_PROJECT_PROD }}
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+        run: envsubst < util/.env.template > .env
+      - name: Final 📦
+        run: sh scripts/docker-final.sh
+      - name: Deploy to heroku (prod) 🚀
+        env:
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+        run: sh script/docker-heroku-prod.sh
