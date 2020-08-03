@@ -12,12 +12,8 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
-      - name: Install & Build 🛠
+      - name: Install & Build & Test 🛠
         run: sh scripts/docker-build.sh
-      - name: Test 🔌
-        run: sh scripts/docker-test.sh
-      - name: Final 📦
-        run: sh scripts/docker-final.sh
       - name: Publish Codecov 📈
         uses: codecov/codecov-action@v1
         with:
@@ -37,10 +33,11 @@ jobs:
       - name: Install & Login heroku 🛠
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_PASSWORD }}
+          HEROKU_API_KEY: ${{ secrets.HEROKU_PASSWORD }}
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
-        run: sh script/docker-heroku.sh
+        run: sh scripts/docker-heroku.sh
       - name: Pull 📦
-        run: sh script/docker-pull.sh
+        run: sh scripts/docker-pull.sh
       - name: Deploy to heroku (dev) 🚀
         env:
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
@@ -53,12 +50,9 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
-      - name: Install & Login heroku 🛠
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_PASSWORD }}
-        run: sh script/docker-heroku.sh
       - name: Substitutes environment variables 🌎
         env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_PASSWORD }}
           API_URL: ${{ secrets.API_URL }}
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY_PROD }}
           FIREBASE_PROJECT: ${{ secrets.FIREBASE_PROJECT_PROD }}
@@ -69,4 +63,4 @@ jobs:
       - name: Deploy to heroku (prod) 🚀
         env:
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
-        run: sh script/docker-heroku-prod.sh
+        run: sh scripts/docker-heroku-prod.sh

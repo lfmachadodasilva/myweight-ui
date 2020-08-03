@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker build . --target build -t build:$GITHUB_RUN_NUMBER
+docker build . -t $GITHUB_REPOSITORY:$GITHUB_RUN_NUMBER
