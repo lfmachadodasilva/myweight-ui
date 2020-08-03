@@ -12,54 +12,36 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
+
       - name: Install & Build & Test 🛠
         run: sh scripts/docker-build.sh
+
       - name: Publish Codecov 📈
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: coverage/*
+
       - name: Deploy to github 🚀
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: sh scripts/docker-deploy-github.sh
 
-  deploy-heroku-dev:
-    runs-on: ubuntu-latest
-    needs: build-test-deploy
-    steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v2
-      - name: Install & Login heroku 🛠
+      - name: Deploy to heroku (dev) 🚀
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_PASSWORD }}
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
-        run: sh scripts/docker-heroku.sh
-      - name: Pull 📦
-        run: sh scripts/docker-pull.sh
-      - name: Deploy to heroku (dev) 🚀
-        env:
-          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
         run: sh script/docker-heroku-dev.sh
 
-  deploy-heroku-prod:
-    if: github.ref == 'refs/heads/master'
-    needs: build-test-deploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v2
-      - name: Substitutes environment variables 🌎
+      - name: Deploy to heroku (prod) 🚀
+        if: github.ref == 'refs/heads/master'
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_PASSWORD }}
           API_URL: ${{ secrets.API_URL }}
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY_PROD }}
           FIREBASE_PROJECT: ${{ secrets.FIREBASE_PROJECT_PROD }}
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
-        run: envsubst < util/.env.template > .env
-      - name: Final 📦
-        run: sh scripts/docker-final.sh
-      - name: Deploy to heroku (prod) 🚀
-        env:
-          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
-        run: sh scripts/docker-heroku-prod.sh
+        run: |
+          envsubst < util/.env.template > .env
+          sh scripts/docker-build.sh
+          sh script/docker-heroku-dev.sh
