@@ -33,7 +33,6 @@ jobs:
       - name: Install & Login heroku 🛠
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_PASSWORD }}
-          HEROKU_API_KEY: ${{ secrets.HEROKU_PASSWORD }}
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
         run: sh scripts/docker-heroku.sh
       - name: Pull 📦
