@@ -9,6 +9,9 @@ import App from './pages/App';
 import * as serviceWorker from './serviceWorker';
 import { getFirebaseConfig } from './configurations/firebase';
 
+// temporary solution to make sure the deployment is correct
+console.log(process.env);
+
 // initialize firebase
 initializeApp({
   ...getFirebaseConfig(
