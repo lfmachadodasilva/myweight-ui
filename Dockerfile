@@ -27,7 +27,7 @@ RUN ["yarn", "run", "build"]
 ##########
 FROM source as test
 VOLUME ["/app/coverage", "/app/logs"]
-ENTRYPOINT ["yarn", "run", "test:coverage"]
+RUN ["yarn", "run", "test:coverage"]
 
 #############
 ## Final ##
