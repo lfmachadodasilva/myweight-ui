@@ -14,7 +14,14 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install & Build & Test 🛠
-        run: sh scripts/docker-build.sh
+        env:
+          API_URL: ${{ secrets.API_URL }}
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY_DEV }}
+          FIREBASE_PROJECT: ${{ secrets.FIREBASE_PROJECT_DEV }}
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+        run: |
+          envsubst < util/.env.template > .env
+          sh scripts/docker-build.sh
 
       - name: Publish Codecov 📈
         uses: codecov/codecov-action@v1
