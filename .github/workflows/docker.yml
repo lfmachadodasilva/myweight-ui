@@ -42,7 +42,8 @@ jobs:
         run: |
           wget -qO- https://cli-assets.heroku.com/install.sh | sh
           echo "${{ secrets.HEROKU_PASSWORD }}" | docker login -u "${{ secrets.HEROKU_USERNAME }}" --password-stdin registry.heroku.com
-          sh scripts/docker-heroku-dev.sh
+          heroku container:push web --app $HEROKU_APP_NAME-dev
+          heroku container:release web --app $HEROKU_APP_NAME-dev
 
       - name: Deploy to heroku (prod) 🚀
         if: github.ref == 'refs/heads/master'
