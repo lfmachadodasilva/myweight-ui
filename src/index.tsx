@@ -5,7 +5,7 @@ import { initializeApp } from 'firebase/app';
 import './index.css';
 import './configurations/i18n';
 
-import App from './pages/App';
+import { App } from './pages/App';
 import * as serviceWorker from './serviceWorker';
 import { getFirebaseConfig } from './configurations/firebase';
 
