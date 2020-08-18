@@ -1,5 +1,12 @@
 {
-    "HEADER": {
-        "TITLE": "MyWeight"
+  "HEADER": {
+    "TITLE": "MyWeight",
+    "SETTINGS": "Settings",
+    "LOGOUT": "Logout"
+  },
+  "AUTH": {
+    "FACEBOOK": {
+      "BUTTON": "Facebook"
     }
+  }
 }

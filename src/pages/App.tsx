@@ -6,7 +6,6 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import './App.css';
 import { hasValue } from '../helpers/utilHelper';
 import { PrivateRoute } from '../helpers/privateRouter';
 import { Routes } from './routes';

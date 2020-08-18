@@ -7,8 +7,7 @@ FROM node:14.4.0 as install
 WORKDIR /app
 
 COPY ./package.json .
-COPY ./yarn.lock .
-RUN ["yarn", "install"]
+RUN ["npm", "install"]
 
 #################
 ## Copy Source ##
@@ -20,14 +19,14 @@ COPY . .
 ## Build ##
 ###########
 FROM source as build
-RUN ["yarn", "run", "build"]
+RUN ["npm", "run", "build"]
 
 ##########
 ## Test ##
 ##########
 FROM source as test
 VOLUME ["/app/coverage", "/app/logs"]
-RUN ["yarn", "run", "test:coverage"]
+RUN ["npm", "run", "test:coverage"]
 
 #############
 ## Final ##
